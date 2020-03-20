@@ -37,18 +37,18 @@ def check_id_card():
 
 
 if __name__ == '__main__':
-    im = cv2.imread('D:/SAAS/DC/fine-grained vehicle classification/data/data/image/1/1101/2011/cf56202f4dc511.jpg')
+    im = cv2.imread('D:/SAAS/DC/project/fine-grained vehicle classification/data/data/image/1/1101/2011/cf56202f4dc511.jpg')
     name, score, model_id, year = test(im)
     print(name)
     print(score)
 
-    test_set = open('D:/SAAS/DC/fine-grained vehicle classification/data/data/train_test_split/classification/test.txt', 'r')
+    test_set = open('D:/SAAS/DC/project/fine-grained vehicle classification/data/data/train_test_split/classification/train.txt', 'r')
     test_img = test_set.readline()[0:-1]
     correct_model = 0
     correct_year = 0
     count = 0
-    while test_img and count < 500:
-        im = cv2.imread('D:/SAAS/DC/fine-grained vehicle classification/data/data/image/' + test_img)
+    while test_img:
+        im = cv2.imread('D:/SAAS/DC/project/fine-grained vehicle classification/data/data/image/' + test_img)
         name, score, model_id, year = test(im)
         true_model_id = test_img.split('/')[1]
         true_year = test_img.split('/')[2]
@@ -58,9 +58,11 @@ if __name__ == '__main__':
             correct_year += 1
         count += 1
         test_img = test_set.readline()[0:-1]
-    print(correct_model / count)
-    print(correct_year / count)
-    print(correct_model / count * 0.8 + correct_year / count * 0.2)
+        if count % 500 == 499:
+            print("Tested = %d images. Model accuracy = %5.3f. Year accuracy = %5.3f." %(count, correct_model / count, correct_year / count))
+    #print(correct_model / count)
+    #print(correct_year / count)
+    #print(correct_model / count * 0.8 + correct_year / count * 0.2)
 
     # app.run(host='0.0.0.0',port=5004)#
 
